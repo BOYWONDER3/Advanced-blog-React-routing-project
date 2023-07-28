@@ -5,6 +5,7 @@ import { userListRoute } from "./pages/UserList";
 import { TodoListRouter } from "./pages/TodoList";
 import { postRoute } from "./pages/Post";
 import { userRoute } from "./pages/User";
+import { newPostRoute } from "./pages/NewPost";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
                 ...PostListRoute,
               },
               { path: ":postId", ...postRoute },
+              { path: 'new', ...newPostRoute },
             ],
           },
           {
