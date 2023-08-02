@@ -23,8 +23,14 @@ export const router = createBrowserRouter([
                 index: true,
                 ...PostListRoute,
               },
-              { path: ":postId", ...postRoute },
-              { path: 'new', ...newPostRoute },
+              {
+                path: ":postId",
+                children: [
+                  { index: true, ...postRoute },
+                  { path: "edit", ...editPostRoute },
+                ],
+              },
+              { path: "new", ...newPostRoute },
             ],
           },
           {
@@ -43,15 +49,17 @@ export const router = createBrowserRouter([
 ]);
 
 function ErrorPage() {
-  const error = useRouteError()
+  const error = useRouteError();
 
-  return <>
-    <h1>Error - Something went wrong</h1>
-    {import.meta.env.MODE !== 'production' && (
-      <>
-        <pre>{error.message}</pre>
-        <pre>{error.stack}</pre>
-      </>
-    )}
-  </>
+  return (
+    <>
+      <h1>Error - Something went wrong</h1>
+      {import.meta.env.MODE !== "production" && (
+        <>
+          <pre>{error.message}</pre>
+          <pre>{error.stack}</pre>
+        </>
+      )}
+    </>
+  );
 }
