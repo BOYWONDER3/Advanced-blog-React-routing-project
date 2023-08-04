@@ -6,6 +6,7 @@ import { TodoListRouter } from "./pages/TodoList";
 import { postRoute } from "./pages/Post";
 import { userRoute } from "./pages/User";
 import { newPostRoute } from "./pages/NewPost";
+import { editPostRoute } from "./pages/EditPost";
 
 export const router = createBrowserRouter([
   {
