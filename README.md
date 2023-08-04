@@ -21,4 +21,4 @@ The API has the following new endpoints:
 - Body is required
 - User is required
 
-### This project is in Development and yet to be deployed in production, once the deployed, the link will be posted here, thank you. 
+### This project is deployed in production, ( https://64cc764c03c12f41ea21d516--dashing-syrniki-ed1304.netlify.app/ ) and can be viewed here. Deployed in production is a client only demo which means all data on the page is stored locally instead of accessing an API, that is The API in this project isn't really like a real API as it is using json-server which is essentially an easy way to create a fake API/DB locally.

@@ -2,17 +2,25 @@ import { Form, Link, useLoaderData } from "react-router-dom";
 import { getPosts } from "../api/posts.js";
 import { PostCard } from "../components/PostCard";
 import { useEffect, useRef } from "react";
+import { getUsers } from "../api/users.js";
+import { FormGroup } from "../components/FormGroup.jsx";
 
 function PostList() {
   const {
     posts,
-    searchParams: { query },
+    users,
+    searchParams: { query = "", userId = "" },
   } = useLoaderData();
   const queryRef = useRef();
+  const userIdRef = useRef();
 
   useEffect(() => {
     queryRef.current.value = query;
   }, [query]);
+
+  useEffect(() => {
+    userIdRef.current.value = userId;
+  }, [userId]);
 
   return (
     <>
@@ -27,26 +35,21 @@ function PostList() {
 
       <Form class="form mb-4">
         <div class="form-row">
-          <div class="form-group">
+          <FormGroup>
             <label htmlFor="query">Query</label>
             <input type="search" name="query" id="query" ref={queryRef} />
-          </div>
-          {/* <div class="form-group">
-            <label for="userId">Author</label>
-            <select type="search" name="userId" id="userId">
+          </FormGroup>
+          <FormGroup>
+            <label htmlFor="userId">Author</label>
+            <select type="search" name="userId" id="userId" ref={userIdRef}>
               <option value="">Any</option>
-              <option value="1">Leanne Graham</option>
-              <option value="2">Ervin Howell</option>
-              <option value="3">Clementine Bauch</option>
-              <option value="4">Patricia Lebsack</option>
-              <option value="5">Chelsey Dietrich</option>
-              <option value="6">Mrs. Dennis Schulist</option>
-              <option value="7">Kurtis Weissnat</option>
-              <option value="8">Nicholas Runolfsdottir V</option>
-              <option value="9">Glenna Reichert</option>
-              <option value="10">Clementina DuBuque</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              ))}
             </select>
-          </div> */}
+          </FormGroup>
           <button class="btn">Filter</button>
         </div>
       </Form>
@@ -63,11 +66,18 @@ function PostList() {
 async function loader({ request: { signal, url } }) {
   const searchParams = new URL(url).searchParams;
   const query = searchParams.get("query");
+  const userId = searchParams.get("userId");
   const filterParams = { q: query };
+  if (userId !== "") filterParams.userId = userId;
 
   const posts = getPosts({ signal, params: filterParams });
+  const users = getUsers({ signal });
 
-  return { posts: await posts, searchParams: { query } };
+  return {
+    posts: await posts,
+    users: await users,
+    searchParams: { query, userId: userId || "" },
+  };
 }
 
 export const PostListRoute = {
